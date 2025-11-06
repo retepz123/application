@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors'
 import dotenv from 'dotenv'
 import authenticate from './routes/auth-routes.js'
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ async function connectDB() {
 connectDB();
 
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -32,6 +33,7 @@ app.use(cors({
 app.set('port', PORT);
 app.use(express.json());
 app.use(bodyParser.json()),
+app.use(cookieParser());
 
 
 

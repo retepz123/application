@@ -23,6 +23,13 @@ export async function login(req, res){
       { expiresIn: '30d'}
     );
 
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: true,
+      samesite: 'none',
+       maxAge: 7 * 24 * 60 * 60 * 1000, 
+    });
+
 return res.status(200).json({
   message: `Welcome boss ${user.username}`,
   token,
