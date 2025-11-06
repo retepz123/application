@@ -7,6 +7,7 @@ dotenv.config();
 const JSONWEB = process.env.JWT_SECRET;
 
 export async function login(req, res){
+  console.log("JWT secret in login:", process.env.JWT_SECRET);
   try {
     const user = req.user;
     console.log('request user', req.user);
@@ -19,14 +20,15 @@ export async function login(req, res){
       id: user._id,
       username: user.username,
       email: user.email },
-      JSONWEB,
+      process.env.JWT_SECRET,
       { expiresIn: '30d'}
     );
+    console.log("Token received:", token);
 
-    res.cookie('jwt', token, {
+    res.cookie('token', token, {
       httpOnly: true,
-      secure: true,
-      samesite: 'none',
+      secure: false,
+      sameSite: 'Lax',
        maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 

@@ -13,9 +13,8 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosInstance.post('/auth/login', {username, password });
+      const res = await axiosInstance.post('/login', {username, password });
       if( res.data?.token ){
-        localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user))
         setLoggedIn(true);
         console.log('Succesfully Logged In');
