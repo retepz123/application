@@ -77,7 +77,7 @@ function ChatBox() {
 
   if (!selectedUser) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-400">
+      <div className='chat-select'>
         Select a user to start chatting 💬
       </div>
     );
@@ -86,55 +86,43 @@ function ChatBox() {
   const messages = allMessages[selectedUser._id] || [];
 
   return (
-    <div className='chatbox-container'>
-      <div className="p-4 border-b font-semibold bg-gray-50">
-        Chat with {selectedUser.username}
-      </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {loading ? (
-          <p className="text-gray-500">Loading messages...</p>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg._id}
-              className={`flex ${
-                msg.senderId === senderId ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              <div
-                className={`px-3 py-2 rounded-lg max-w-xs ${
-                  msg.senderId === senderId
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200'
-                }`}
-              >
-                {msg.context}
-              </div>
-            </div>
-          ))
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+   <div className='chatbox-container'>
+  <div className='chatbox-header'>{selectedUser.username}</div>
 
-      <div className="p-4 border-t flex gap-2">
-        <input
-          type="text"
-          value={context}
-          onChange={(e) => setContext(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          className="flex-1 border rounded-lg px-3 py-2 outline-none"
-          placeholder="Type a message..."
-        />
-        <button
-          onClick={sendMessage}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+  <div className='chatbox-messages'>
+    {loading ? (
+      <p>Loading messages...</p>
+    ) : messages.length === 0 ? (
+      <p>No messages yet</p>
+    ) : (
+      messages.map((msg) => (
+        <div
+          key={msg._id}
+          className={`chat-message ${
+            msg.senderId === senderId ? 'chat-sender' : 'chat-receiver'
+          }`}
         >
-          Send
-        </button>
-      </div>
-    </div>
-  );
+          {msg.context}
+        </div>
+      ))
+    )}
+    <div ref={messagesEndRef}></div>
+  </div>
+
+  <div className="chatbox-input">
+    <input
+      type="text"
+      value={context}
+      onChange={(e) => setContext(e.target.value)}
+      onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+      placeholder="Type a message..."
+    />
+    <button onClick={sendMessage}>Send</button>
+  </div>
+</div>
+
+  )
 }
 
 export default ChatBox;

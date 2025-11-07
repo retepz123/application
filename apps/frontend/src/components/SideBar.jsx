@@ -22,7 +22,7 @@ function GetAllUsers() {
 
   return (
     <div className="side-users-container">
-      <h2 style={{ padding: '0 1rem', marginBottom: '0.5rem' }}>Users</h2>
+      <h2 className='user-title'>Members</h2>
       <ul className="side-users">
         {users
           .filter((user) => user._id !== authUser?._id)

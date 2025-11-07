@@ -44,7 +44,7 @@ function Login() {
   return (
     <div >
       <div className='login-page'>
-        <h className='title-login'> Login </h>
+        <h1 className='title-login'> Login </h1>
         <form className='login-form' onSubmit={handleLogin}> 
           <input className='in-log' name='username' type='text' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} required  />
           <input  className='in-log' name='password' type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} required />
