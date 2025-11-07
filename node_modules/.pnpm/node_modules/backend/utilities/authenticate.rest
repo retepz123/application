@@ -25,3 +25,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/auth/allUsers
 cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGI1Y2E3Njk4NGJjYTIwOGMzNjJlNSIsInVzZXJuYW1lIjoidGVzdFVzZXIiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzYyNDIzMTg4LCJleHAiOjE3NjUwMTUxODh9.eqwlMf7zo_e7nn_QiWL2DWKVIAWgws7KwXXKqv4IBp4
+
+###
+POST http://localhost:3000/api/v1/send
+cookie: 

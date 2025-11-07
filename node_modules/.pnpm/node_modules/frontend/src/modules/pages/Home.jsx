@@ -1,11 +1,16 @@
+import ChatBox from '../../components/chatbox';
 import GetAllUsers from '../../components/SideBar';
 
 function Home() {
   return (
-    <>
-    <h1>Home Page</h1>
-    <GetAllUsers />
-    </>
+    <div>
+      <div>
+        <GetAllUsers />
+      </div>
+      <div>
+        <ChatBox />
+      </div>
+    </div>
   );
 }
 

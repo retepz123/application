@@ -6,6 +6,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import authenticate from './routes/auth-routes.js'
 import cookieParser from 'cookie-parser';
+import messageRoute from './routes/message-routes.js'
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authenticate );
+app.use('/api/messages', messageRoute);
 
 app.listen(PORT, () => {
   console.log(`App is listening to port ${PORT}`);

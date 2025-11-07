@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { axiosInstance } from '../../lib/axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -92,6 +93,7 @@ function SignUp() {
           </p>
         )}
       </form>
+      <Link to='/login'>Login</Link>
     </div>
   );
 }

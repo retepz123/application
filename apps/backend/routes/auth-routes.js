@@ -10,5 +10,8 @@ const router = express.Router();
 router.post('/register', validateSignUp, signUp);
 router.post('/login', authLogin, login);
 router.get('/allUsers', protectedMiddleware, getAllUser);
+router.get('/check', protectedMiddleware, (req, res) => {
+  res.status(200).json({ user: req.user });
+});
 
 export default router;

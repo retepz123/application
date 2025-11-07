@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../lib/axios';
 
-const LOGIN_URL = `${import.meta.env.BACKEND_URL}/api/auth/login`;
+const LOGIN_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`;
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -34,12 +34,11 @@ function Login() {
     useEffect(() => {
     if (loggedIn) {
       const timer = setTimeout(() => {
-        navigate('/'); // redirect to home page
+        navigate('/home'); // redirect to home page
       }, 1000);
       return () => clearTimeout(timer);
     }
   }, [loggedIn, navigate]);
-
 
   return (
     <div>
