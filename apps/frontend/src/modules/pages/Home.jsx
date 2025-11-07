@@ -1,14 +1,17 @@
 import ChatBox from '../../components/chatbox';
 import GetAllUsers from '../../components/SideBar';
+import './home.css';
 
 function Home() {
   return (
-    <div>
-      <div>
+    <div className='container-home'>
+      <div className='in-con'>
+      <div className='side'>
         <GetAllUsers />
       </div>
-      <div>
+      <div className='chat'>
         <ChatBox />
+      </div>
       </div>
     </div>
   );

@@ -86,7 +86,7 @@ function ChatBox() {
   const messages = allMessages[selectedUser._id] || [];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className='chatbox-container'>
       <div className="p-4 border-b font-semibold bg-gray-50">
         Chat with {selectedUser.username}
       </div>

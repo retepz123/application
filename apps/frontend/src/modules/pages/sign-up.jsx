@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { axiosInstance } from '../../lib/axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import '../../App.css';
+import logo from '../../image/logo.png';
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ function SignUp() {
     setLoading(true);
 
     try {
-      const res = await axiosInstance.post('/auth/register', formData); 
+      const res = await axiosInstance.post('/register', formData); 
       setMessage(res.data.message);
       console.log('✅ User Created Successfully:', res.data);
 
@@ -41,20 +43,23 @@ function SignUp() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <form
+    <div className='main'>
+     <div>
+      <div className='signup-container'>
+         <form className='form'
         onSubmit={handleSubmit}
-        className="flex flex-col gap-3 w-80 p-6 bg-white shadow-lg rounded-lg"
+        
       >
-        <h1 className="text-2xl font-bold text-center mb-2">Sign Up</h1>
+        <h1 className="title">Sign Up</h1>
 
-        <input
+        <div className='input'>
+             <input
           name="username"
           type="text"
           placeholder="Username"
           value={formData.username}
           onChange={handleChange}
-          className="border rounded p-2"
+          className="data"
         />
 
         <input
@@ -63,7 +68,7 @@ function SignUp() {
           placeholder="E-mail"
           value={formData.email}
           onChange={handleChange}
-          className="border rounded p-2"
+          className="data"
         />
 
         <input
@@ -72,28 +77,41 @@ function SignUp() {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
-          className="border rounded p-2"
+          className="data"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition"
+          className="submit-btn"
         >
           {loading ? 'Creating...' : 'Sign Up'}
         </button>
 
-        {message && (
-          <p
-            className={`mt-2 text-center ${
-              message.includes('Created') ? 'text-green-600' : 'text-red-500'
-            }`}
-          >
-            {message}
-          </p>
-        )}
+       {message && (
+  <p className={`alert ${message.includes('Created') ? 'success' : 'error'}`}>
+    {message}
+  </p>
+)}
+        </div>
+
+     
       </form>
-      <Link to='/login'>Login</Link>
+      <div className='tagline'>
+        <div>
+          <img src={logo} alt='logo' className='logo' />
+        </div>
+        <div className='text'>
+          Welcome to our community — where every conversation counts, friendships flourish, and your voice is heard. Dive in, connect, and make every chat meaningful!
+        </div>
+     <Link to='/login' className='login-btn'>Login</Link>
+
+      </div>
+
+      </div>
+
+     </div>
+
     </div>
   );
 }

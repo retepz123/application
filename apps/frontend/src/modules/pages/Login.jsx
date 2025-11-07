@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../lib/axios';
+import './login.css';
 
 const LOGIN_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`;
 
@@ -41,13 +42,13 @@ function Login() {
   }, [loggedIn, navigate]);
 
   return (
-    <div>
-      <div>
-        <h1> Login </h1>
-        <form onSubmit={handleLogin}> 
-          <input name='username' type='text' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} required  />
-          <input name='password' type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} required />
-          <button type='submit'>Submit</button>
+    <div >
+      <div className='login-page'>
+        <h className='title-login'> Login </h>
+        <form className='login-form' onSubmit={handleLogin}> 
+          <input className='in-log' name='username' type='text' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} required  />
+          <input  className='in-log' name='password' type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)} required />
+          <button className='btn' type='submit'>Submit</button>
 
         </form>
       </div>
