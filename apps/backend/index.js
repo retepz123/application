@@ -25,7 +25,7 @@ async function connectDB() {
 connectDB();
 
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173', 'https://from-hi-to-forever.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
