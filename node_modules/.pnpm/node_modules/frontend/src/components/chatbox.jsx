@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useChatStore } from '../lib/chatStore';
 import { useAuthStore } from '../lib/authStore';
+import { socket } from '../lib/socket';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
