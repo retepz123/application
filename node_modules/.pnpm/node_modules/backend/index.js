@@ -8,6 +8,7 @@ import authenticate from './routes/auth-routes.js'
 import cookieParser from 'cookie-parser';
 import messageRoute from './routes/message-routes.js'
 import { Server } from 'socket.io';
+import http from 'http';
 
 dotenv.config();
 
