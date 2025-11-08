@@ -18,64 +18,58 @@ function ChatBox() {
   const senderId = authUser?.user?._id;
   const receiverId = selectedUser?._id;
 
-  //connect and join the room for user
+  // Join your room on mount
   useEffect(() => {
-    if(!senderId) return;
-    socket.emit('joinRoom', senderId);
-
-    return () => {
-      socket.off('receiveMessage');
-    };
+    if (!senderId) return;
+    socket.emit('join_room', senderId);
   }, [senderId]);
 
-  //listen for incoming messages
+  // Listen for incoming messages
   useEffect(() => {
-    socket.on('receiveMessage', (data) => {
-      setAllMessages((prev) => ({
+    const handleReceive = (data) => {
+      setAllMessages(prev => ({
         ...prev,
-        [data.senderId]: [...(prev[data.senderId] || []), data]
+        [data.senderId]: [...(prev[data.senderId] || []), data],
       }));
-    });
+    };
+
+    socket.on('receive_message', handleReceive);
+    return () => {
+      socket.off('receive_message', handleReceive);
+    };
   }, []);
 
-  // Fetch messages whenever selected user changes
+  // Fetch messages on selected user change
   useEffect(() => {
     const fetchMessages = async () => {
       if (!senderId || !receiverId) return;
-
       try {
         setLoading(true);
         const res = await axios.get(
           `${BACKEND_URL}/api/messages/${senderId}/${receiverId}`,
           { withCredentials: true }
         );
-
-        setAllMessages((prev) => ({
+        setAllMessages(prev => ({
           ...prev,
           [receiverId]: res.data,
         }));
       } catch (err) {
-        console.error('Error fetching messages:', err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchMessages();
   }, [senderId, receiverId]);
 
-  // Scroll to bottom when messages change
+  // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [allMessages, selectedUser]);
 
-  // Send a message
+  // Send message
   const sendMessage = async () => {
-    if (!context.trim()) return;
-    if (!senderId || !receiverId) {
-      console.warn('Missing sender or receiver ID');
-      return;
-    }
+    if (!context.trim() || !senderId || !receiverId) return;
 
     try {
       const res = await axios.post(
@@ -83,33 +77,26 @@ function ChatBox() {
         { senderId, receiverId, context },
         { withCredentials: true }
       );
-
       const newMsg = res.data;
 
-
-      // Update the current conversation
-      setAllMessages((prev) => ({
+      setAllMessages(prev => ({
         ...prev,
         [receiverId]: [...(prev[receiverId] || []), newMsg],
       }));
 
-      socket.emit('sendMessage', newMsg)
+      // Emit via socket
+      socket.emit('send_message', newMsg);
 
       setContext('');
     } catch (err) {
-      console.error('Error sending message:', err);
+      console.error(err);
     }
   };
 
-  if (!selectedUser) {
-    return (
-      <div className='chat-select'>
-        Select a user to start chatting 💬
-      </div>
-    );
-  }
+  if (!selectedUser) return <div>Select a user to start chatting 💬</div>;
 
   const messages = allMessages[selectedUser._id] || [];
+
 
   return (
 
