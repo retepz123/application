@@ -28,7 +28,7 @@ connectDB();
 
 app.use(cors({
   origin: ['http://localhost:5173', 'https://from-hi-to-forever.onrender.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 
@@ -60,19 +60,16 @@ const io = new Server(server, {
 
 //handle socket with connections
 io.on('connection', (socket) => {
-  console.log('User connected', socket.id);
+  console.log('User connected:', socket.id);
 
-  //user sends message
-  socket.on('sendmessage', (data) => {
-    console.log('Message received:', data);
-    //message to receiver
-    io.to(data.receiverId).emit('receive message:', data);
-  });
-
-  // joing a user room
-  socket.on('join Room:', (userId) => {
+  socket.on('join_room', (userId) => {
     socket.join(userId);
     console.log(`User ${userId} joined their room`);
+  });
+
+  socket.on('send_message', (data) => {
+    console.log('Message received:', data);
+    io.to(data.receiverId).emit('receive_message', data);
   });
 
   socket.on('disconnect', () => {
@@ -82,7 +79,6 @@ io.on('connection', (socket) => {
 
 
 
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`App is listening to port ${PORT}`);
 });
