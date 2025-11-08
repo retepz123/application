@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import authenticate from './routes/auth-routes.js'
 import cookieParser from 'cookie-parser';
 import messageRoute from './routes/message-routes.js'
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -46,6 +47,40 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authenticate );
 app.use('/api/messages', messageRoute);
+
+// create http server and socket io server
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+   origin: ['http://localhost:5173', 'https://from-hi-to-forever.onrender.com'],
+   credentials: true,
+  },
+});
+
+//handle socket with connections
+io.on('connection', (socket) => {
+  console.log('User connected', socket.id);
+
+  //user sends message
+  socket.on('sendmessage', (data) => {
+    console.log('Message received:', data);
+    //message to receiver
+    io.to(data.receiverId).emit('receive message:', data);
+  });
+
+  // joing a user room
+  socket.on('join Room:', (userId) => {
+    socket.join(userId);
+    console.log(`User ${userId} joined their room`);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+
+
 
 app.listen(PORT, () => {
   console.log(`App is listening to port ${PORT}`);

@@ -17,6 +17,26 @@ function ChatBox() {
   const senderId = authUser?.user?._id;
   const receiverId = selectedUser?._id;
 
+  //connect and join the room for user
+  useEffect(() => {
+    if(!senderId) return;
+    socket.emit('joinRoom', senderId);
+
+    return () => {
+      socket.off('receiveMessage');
+    };
+  }, [senderId]);
+
+  //listen for incoming messages
+  useEffect(() => {
+    socket.on('receiveMessage', (data) => {
+      setAllMessages((prev) => ({
+        ...prev,
+        [data.senderId]: [...(prev[data.senderId] || []), data]
+      }));
+    });
+  }, []);
+
   // Fetch messages whenever selected user changes
   useEffect(() => {
     const fetchMessages = async () => {
@@ -63,11 +83,16 @@ function ChatBox() {
         { withCredentials: true }
       );
 
+      const newMsg = res.data;
+
+
       // Update the current conversation
       setAllMessages((prev) => ({
         ...prev,
-        [receiverId]: [...(prev[receiverId] || []), res.data],
+        [receiverId]: [...(prev[receiverId] || []), newMsg],
       }));
+
+      socket.emit('sendMessage', newMsg)
 
       setContext('');
     } catch (err) {
